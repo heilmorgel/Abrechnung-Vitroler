@@ -1,0 +1,19 @@
+name: "Abrechnung Vitroler"
+version: "0.1.0"
+slug: abrechnung_vitroler
+description: "Kondominiums-Abrechnung für Fernwärme, Wasser/Abwasser und Strom"
+url: "https://github.com/local/abrechnung-vitroler"
+arch:
+  - amd64
+  - aarch64
+init: false
+ingress: true
+ingress_port: 8099
+panel_icon: mdi:file-document-multiple
+panel_title: Abrechnung
+homeassistant_api: true
+map:
+  - type: data
+    read_only: false
+options: {}
+schema: {}
