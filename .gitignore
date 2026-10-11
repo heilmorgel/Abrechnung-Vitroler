@@ -6,9 +6,8 @@ venv/
 env/
 data/
 .env
-frontend/node_modules/
-frontend/dist/
-addon/app/
+**/node_modules/
+**/dist/
 *.egg-info/
 .DS_Store
 analysis_output/

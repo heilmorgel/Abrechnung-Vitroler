@@ -1,14 +1,21 @@
 ARG BUILD_FROM=ghcr.io/home-assistant/amd64-base-python:3.12-alpine3.20
-FROM ${BUILD_FROM}
 
+# Build UI inside the image so the add-on context is self-contained
+FROM node:22-alpine AS frontend-build
+WORKDIR /src
+COPY frontend/package.json frontend/package-lock.json ./
+RUN npm ci
+COPY frontend/ ./
+RUN npm run build
+
+FROM ${BUILD_FROM}
 WORKDIR /app
 
-# Prepared by scripts/prepare_addon.py into addon/app/
-COPY app/backend/requirements.txt /app/backend/requirements.txt
+COPY backend/requirements.txt /app/backend/requirements.txt
 RUN pip3 install --no-cache-dir -r /app/backend/requirements.txt
 
-COPY app/backend /app/backend
-COPY app/www /app/frontend/dist
+COPY backend /app/backend
+COPY --from=frontend-build /src/dist /app/frontend/dist
 COPY run.sh /run.sh
 RUN chmod a+x /run.sh
 

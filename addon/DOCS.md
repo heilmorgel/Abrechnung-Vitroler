@@ -11,31 +11,31 @@ Kondominiums-Abrechnung für **Fernwärme**, **Wasser/Abwasser** und **Strom** m
 - Zählerstände aus Home-Assistant-Sensoren oder Helfer-Variablen (`input_number`) über die History-API
 - Fehlende Stände: Abbruch mit Hinweis; optional lineare Interpolation
 
-## Installation (lokales Add-on)
+## Installation
 
-1. Frontend bauen und Add-on-Kontext vorbereiten (auf dem Entwicklungsrechner):
+### Als Git-Repository (empfohlen)
 
-```bash
-cd frontend && npm install && npm run build && cd ..
-python scripts/prepare_addon.py
-```
+1. **Einstellungen → Add-ons → Add-on-Store → ⋮ → Repositories**
+2. `https://github.com/heilmorgel/Abrechnung-Vitroler` hinzufügen
+3. Add-on **Abrechnung Vitroler** installieren und starten
+4. Sidebar / „OPEN WEB UI“ (Ingress)
 
-2. Den Ordner `addon` nach `/addons/abrechnung_vitroler` auf dem HA-Host kopieren (Inhalt von `addon/`, inkl. `app/`).
+Das Docker-Image baut Backend und Frontend direkt aus diesem Ordner — kein manueller Prepare-Schritt nötig.
 
-3. In Home Assistant: **Einstellungen → Add-ons → Add-on-Store → Menü → Lokale Add-ons neu laden**.
+### Lokales Add-on
 
-4. **Abrechnung Vitroler** installieren und starten. Sidebar-Eintrag bzw. „OPEN WEB UI“ (Ingress).
+Den Ordner `addon` nach `/addons/abrechnung_vitroler` kopieren, lokale Add-ons neu laden, installieren.
 
 ## Konfiguration in der App
 
-1. **Einstellungen** öffnen.
-2. Pro Scope Methode und ggf. Prozentwerte setzen.
+1. **Einstellungen** öffnen
+2. Pro Scope Methode und ggf. Prozentwerte setzen
 3. Entity-IDs zuordnen, z. B.:
    - `sensor.wmz_eg`, `sensor.wmz_1og`, `sensor.wmz_2og`, `sensor.wmz_gesamt`
    - `sensor.ww_eg`, `sensor.ww_2og`, `sensor.ww_gesamt` (1. OG optional bei Restregel)
    - Wasser: `sensor.wasser_eg` / `_1og` / `_2og`
    - Strom: `sensor.strom_eg` / `_1og` / `_2og`
-4. Speichern, danach Rechnung anlegen.
+4. Speichern, danach Rechnung anlegen
 
 ## Fernwärme-Logik (Kurz)
 
@@ -43,26 +43,6 @@ python scripts/prepare_addon.py
 2. Wärme Heizung = WMZ EG + 1OG + 2OG; Wärme WW = WMZ Gesamt − Heizung
 3. WW 1OG = WW Gesamt − EG − 2OG (Standard, abschaltbar)
 4. Rechnungsbetrag nach kWh-Anteilen HZ/WW, dann HZ nach WMZ-Wohnung, WW nach m³
-
-## Lokale Entwicklung
-
-```bash
-python -m venv .venv
-# Windows: .venv\Scripts\activate
-pip install -r backend/requirements.txt
-# optional: .env mit HA_URL und HA_TOKEN (Long-Lived Access Token)
-set DATA_DIR=./data
-set ALLOW_ALL_HOSTS=true
-cd frontend && npm install && npm run build && cd ..
-set STATIC_DIR=frontend/dist
-python -m uvicorn backend.app.main:app --reload --port 8099
-```
-
-Tests:
-
-```bash
-pytest backend/tests -q
-```
 
 ## Datenschutz
 

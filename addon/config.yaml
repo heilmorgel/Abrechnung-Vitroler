@@ -1,8 +1,8 @@
 name: "Abrechnung Vitroler"
-version: "0.1.0"
+version: "0.1.1"
 slug: abrechnung_vitroler
 description: "Kondominiums-Abrechnung für Fernwärme, Wasser/Abwasser und Strom"
-url: "https://github.com/local/abrechnung-vitroler"
+url: "https://github.com/heilmorgel/Abrechnung-Vitroler"
 arch:
   - amd64
   - aarch64
